@@ -20,26 +20,10 @@ namespace ServicioApi.DataObjects.Samples
             if (whereGroups == "*")
             {
                 whereGroups = null;
-                DataTable dtDatos = Db.ExecuteDataSet("SP_FLOTA_AREA_Q1", whereGroups, whereJobHeader).Tables[0];
-                if (dtDatos.Rows.Count > 0)
+                String[] listwhereJobHeader = whereJobHeader.Split(',');
+                for (int j = 0; j < listwhereJobHeader.Length; j++)
                 {
-                    foreach (DataRow row in dtDatos.AsEnumerable())
-                    {
-                        flotas.Add(new Flotas(
-
-                            row["identity"].ToString(),
-                            row["nombre_flota"].ToString(),
-                            row["id_customer"].ToString())
-                        );
-                    }
-                }
-            }
-            else
-            {
-                String[] listaGroups= whereGroups.Split(',');
-                for (int i = 0; i < listaGroups.Length; i++)
-                {;
-                    DataTable dtDatos = Db.ExecuteDataSet("SP_FLOTA_AREA_Q1", listaGroups[i], whereJobHeader).Tables[0];
+                    DataTable dtDatos = Db.ExecuteDataSet("SP_FLOTA_AREA_Q1", whereGroups, listwhereJobHeader[j]).Tables[0];
                     if (dtDatos.Rows.Count > 0)
                     {
                         foreach (DataRow row in dtDatos.AsEnumerable())
@@ -50,6 +34,30 @@ namespace ServicioApi.DataObjects.Samples
                                 row["nombre_flota"].ToString(),
                                 row["id_customer"].ToString())
                             );
+                        }
+                    }
+                }
+            }
+            else
+            {
+                String[] listaGroups= whereGroups.Split(',');
+                String[] listwhereJobHeader = whereJobHeader.Split(',');
+                for (int i = 0; i < listaGroups.Length; i++)
+                {
+                    for (int j = 0; j < listwhereJobHeader.Length; j++)
+                    {
+                        DataTable dtDatos = Db.ExecuteDataSet("SP_FLOTA_AREA_Q1", listaGroups[i], listwhereJobHeader[j]).Tables[0];
+                        if (dtDatos.Rows.Count > 0)
+                        {
+                            foreach (DataRow row in dtDatos.AsEnumerable())
+                            {
+                                flotas.Add(new Flotas(
+
+                                    row["identity"].ToString(),
+                                    row["nombre_flota"].ToString(),
+                                    row["id_customer"].ToString())
+                                );
+                            }
                         }
                     }
                 }               

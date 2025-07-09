@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using LibreriaBSNetCore.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ServicioApi.Facade.Samples;
-using LibreriaBSNetCore.Exceptions;
 using ServicioApi.BusinessObjects.Consulta;
+using ServicioApi.BusinessObjects.Consultas;
+using ServicioApi.Facade.Samples;
 
 namespace ServicioApi.JWT.Controllers.Samples
 {
@@ -13,14 +14,14 @@ namespace ServicioApi.JWT.Controllers.Samples
     [Authorize] // Asegura que este controlador requiere autenticación
     public class SamplesController : ControllerBase
     {
-        [Route("Client_Factura/{whereJobHeader}")]
-        [HttpGet()]
-        public virtual byte[] Client_Factura(String whereJobHeader)
+        [Route("Client_Factura")]
+        [HttpPost()]
+        public virtual byte[] Client_Factura(Peticion peticio)
         {
             try
             {
                 SamplesFacade faSamplesFacade = new SamplesFacade();
-                return faSamplesFacade.Client_Factura(whereJobHeader);
+                return faSamplesFacade.Client_Factura(peticio.whereJobHeader);
             }
             catch (System.Exception e)
             {
@@ -29,14 +30,14 @@ namespace ServicioApi.JWT.Controllers.Samples
             }
         }
 
-        [Route("GetFlotas_Seguro/{whereGroups}/{whereJobHeader}")]
-        [HttpGet()]
-        public virtual IList<Flotas> GetFlotas_Seguro(String whereGroups, String whereJobHeader)
+        [Route("GetFlotas_Seguro")]
+        [HttpPost()]
+        public virtual IList<Flotas> GetFlotas_Seguro(Peticion peticion)
         {
             try
             {
                 SamplesFacade faSamplesFacade = new SamplesFacade();
-                return faSamplesFacade.GetFlotas_Seguro(whereGroups, whereJobHeader);
+                return faSamplesFacade.GetFlotas_Seguro(peticion.whereGroups, peticion.whereJobHeader);
             }
             catch (System.Exception e)
             {
@@ -45,14 +46,14 @@ namespace ServicioApi.JWT.Controllers.Samples
             }
         }
 
-        [Route("Equipo/{whereGroups}")]
-        [HttpGet()]
-        public virtual IList<Equipos> Equipo(String whereGroups)
+        [Route("Equipo")]
+        [HttpPost()]
+        public virtual IList<Equipos> Equipo(Peticion peticion)
         {
             try
             {
                 SamplesFacade faSamplesFacade = new SamplesFacade();
-                return faSamplesFacade.Equipo(whereGroups);
+                return faSamplesFacade.Equipo(peticion.whereGroups);
             }
             catch (System.Exception e)
             {
@@ -61,14 +62,14 @@ namespace ServicioApi.JWT.Controllers.Samples
             }
         }
 
-        [Route("ComponentesPorEquipo/{Group}/{Equipos}")]
-        [HttpGet()]
-        public virtual IList<Componentes> ComponentesPorEquipo(String Group, String Equipos)
+        [Route("ComponentesPorEquipo")]
+        [HttpPost()]
+        public virtual IList<Componentes> ComponentesPorEquipo(Peticion peticion)
         {
             try
             {
                 SamplesFacade faSamplesFacade = new SamplesFacade();
-                return faSamplesFacade.ComponentesPorEquipo(Group, Equipos);
+                return faSamplesFacade.ComponentesPorEquipo(peticion.whereGroups, peticion.whereJobHeader);
             }
             catch (System.Exception e)
             {
@@ -76,14 +77,14 @@ namespace ServicioApi.JWT.Controllers.Samples
                 throw;
             }
         }
-        [Route("NivelServicio/{whereCustomer}")]
-        [HttpGet()]
-        public virtual IList<Nivelservicio> NivelServicio(String whereCustomer)
+        [Route("NivelServicio")]
+        [HttpPost()]
+        public virtual IList<Nivelservicio> NivelServicio(Peticion peticion)
         {
             try
             {
                 SamplesFacade faSamplesFacade = new SamplesFacade();
-                return faSamplesFacade.NivelServicio(whereCustomer);
+                return faSamplesFacade.NivelServicio(peticion.whereGroups);
             }
             catch (System.Exception e)
             {
